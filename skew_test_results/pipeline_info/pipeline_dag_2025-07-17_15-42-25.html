@@ -1,0 +1,155 @@
+<!--
+  ~ Copyright 2013-2024, Seqera Labs
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<html>
+<head>
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+</head>
+<body>
+<pre class="mermaid" style="text-align: center;">
+flowchart TB
+    subgraph " "
+    v0["Channel.fromPath"]
+    v1["Channel.fromPath"]
+    v3["Channel.fromPath"]
+    v22["Channel.from"]
+    v65["Channel.fromPath"]
+    v81["Channel.fromPath"]
+    v84["Channel.fromPath"]
+    end
+    subgraph SKEWX
+    subgraph INPUT_CHECK
+    v5([SAMPLESHEET_CHECK])
+    v7(( ))
+    end
+    v10([SAMTOOLS_INDEX_SAMPLES])
+    v16([SAMTOOLS_MERGE])
+    v17([SAMTOOLS_INDEX_MERGED])
+    subgraph separated_deepvariant
+    v25([GENERATE_COMMANDS])
+    v26([MAKE_EXAMPLES])
+    v27([GPU_PART])
+    v28(( ))
+    end
+    v30([FILTER_PASS])
+    v31([WHATSHAP_PHASE])
+    v33([WHATSHAP_STATS])
+    v40([WHATSHAP_HAPLOTAG])
+    v41([SAMTOOLS_INDEX_HAPLOTAG])
+    v42([MOSDEPTH])
+    v44([WHATSHAP_HAPLOTAG_MERGED])
+    v45([SAMTOOLS_INDEX_HAPLOTAG_MERGED])
+    v46([MOSDEPTH_MERGED])
+    v51([SAMTOOLS_VIEWHP])
+    v52([R_CLUSTERBYMETH])
+    subgraph reporting
+    v68([MOSDEPTH_PLOTDIST])
+    v69([NANOCOMP])
+    v83([REPORT_INDIVIDUAL])
+    v93([REPORT_BOOK])
+    v53(( ))
+    v59(( ))
+    v85(( ))
+    v86(( ))
+    v87(( ))
+    v88(( ))
+    v89(( ))
+    v90(( ))
+    v91(( ))
+    end
+    v2(( ))
+    v4(( ))
+    v32(( ))
+    end
+    subgraph " "
+    v6[" "]
+    v29["ch_deepvariant_report"]
+    v43["ch_mosdepth"]
+    v47["_"]
+    v94[" "]
+    end
+    v0 --> v5
+    v1 --> v2
+    v3 --> v4
+    v5 --> v6
+    v5 --> v7
+    v7 --> v10
+    v10 --> v2
+    v2 --> v16
+    v16 --> v17
+    v17 --> v2
+    v22 --> v25
+    v22 --> v26
+    v2 --> v25
+    v25 --> v26
+    v26 --> v27
+    v27 --> v28
+    v28 --> v29
+    v28 --> v30
+    v30 --> v31
+    v2 --> v31
+    v31 --> v44
+    v31 --> v2
+    v31 --> v32
+    v32 --> v33
+    v33 --> v4
+    v2 --> v40
+    v40 --> v41
+    v41 --> v42
+    v41 --> v4
+    v41 --> v59
+    v42 --> v43
+    v42 --> v53
+    v2 --> v44
+    v44 --> v45
+    v45 --> v46
+    v45 --> v59
+    v46 --> v47
+    v46 --> v53
+    v4 --> v51
+    v51 --> v52
+    v4 --> v52
+    v52 --> v4
+    v65 --> v53
+    v53 --> v68
+    v68 --> v4
+    v59 --> v69
+    v69 --> v4
+    v81 --> v4
+    v4 --> v83
+    v83 --> v86
+    v83 --> v87
+    v83 --> v88
+    v83 --> v89
+    v83 --> v90
+    v83 --> v91
+    v84 --> v85
+    v4 --> v93
+    v85 --> v93
+    v86 --> v93
+    v87 --> v93
+    v88 --> v93
+    v89 --> v93
+    v90 --> v93
+    v91 --> v93
+    v93 --> v94
+
+</pre>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+</body>
+</html>

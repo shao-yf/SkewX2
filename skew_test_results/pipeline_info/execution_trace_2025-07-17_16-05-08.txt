@@ -1,0 +1,4 @@
+task_id	hash	native_id	name	status	exit	submit	duration	realtime	%cpu	peak_rss	peak_vmem	rchar	wchar
+1	4a/2556a2	1116723	SKEWX:INPUT_CHECK:SAMPLESHEET_CHECK (test_data_samplesheet.csv)	COMPLETED	0	2025-07-17 16:05:11.962	96ms	46ms	93.8%	3 MB	217.4 MB	1.2 MB	586 B
+2	1a/277422	1116808	SKEWX:SAMTOOLS_INDEX_SAMPLES (mouse_F1)	COMPLETED	0	2025-07-17 16:05:12.115	185ms	138ms	218.5%	3 MB	217.4 MB	60.4 MB	87.8 KB
+3	5d/900acb	1116908	SKEWX:separated_deepvariant:GENERATE_COMMANDS (mouse_F1)	FAILED	1	2025-07-17 16:05:12.356	71ms	27ms	-	-	-	-	-

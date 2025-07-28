@@ -1,0 +1,32 @@
+<html>
+    <head>
+      <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+      <style>
+    div {
+      width: 800px;
+      height: 420px;
+    }
+    </style
+    </head>
+    <body><h2>total</h2><div id='plot-div-total'></div><hr/>
+<b>chrX</b><div id='plot-div-chrX'></div><hr/></div>
+    <script>
+    var layout = {
+        hovermode: 'closest',
+        xaxis: {title: 'Coverage'},
+        yaxis: {title: 'Proportion of bases at coverage', domain: [0, 1], dtick: 0.25},
+        showlegend: true,
+        autosize: true,
+        legend: {
+            x: 0.1,
+            y: 0.1
+        },
+    }
+    
+    Plotly.newPlot('plot-div-total', [{"x": [27.0, 26.0, 25.0, 24.0, 23.0, 22.0, 21.0, 20.0, 19.0, 18.0, 17.0, 16.0, 15.0, 14.0, 13.0, 12.0, 11.0, 10.0, 9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0, 0.0], "y": [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 1.0], "mode": "lines", "name": "mouse_F1_NSC (0.0)"}], layout, {displayModeBar: false, displaylogo: false, fillFrame: false, autosizeable: true});
+    
+    Plotly.newPlot('plot-div-chrX', [{"x": [27.0, 26.0, 25.0, 24.0, 23.0, 22.0, 21.0, 20.0, 19.0, 18.0, 17.0, 16.0, 15.0, 14.0, 13.0, 12.0, 11.0, 10.0, 9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0, 0.0], "y": [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 1.0], "mode": "lines", "name": "mouse_F1_NSC (0.0)"}], layout, {displayModeBar: false, displaylogo: false, fillFrame: false, autosizeable: true});
+    
+    </script>
+    </body>
+    </html>

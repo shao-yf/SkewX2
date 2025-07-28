@@ -1,0 +1,22 @@
+Phasing statistics for sample default from file mouse_F1.phased.vcf.gz
+---------------- Chromosome chrX ----------------
+     Variants in VCF:    17315
+        Heterozygous:    15009 (   13325 SNVs)
+              Phased:    13302 (   13302 SNVs)
+            Unphased:     1707 (not considered below)
+          Singletons:        0 (not considered below)
+              Blocks:        2
+
+Block sizes (no. of variants)
+   Median block size:     6651.00 variants
+  Average block size:     6651.00 variants
+       Largest block:    11855    variants
+      Smallest block:     1447    variants
+
+Block lengths (basepairs)
+      Sum of lengths:  2609088    bp
+ Median block length:  1304544.00 bp
+Average block length:  1304544.00 bp
+       Longest block:  2376324    bp
+      Shortest block:   232764    bp
+          Block NG50:        0    bp
