@@ -27,6 +27,26 @@
                 "reference": {
                     "type": "string",
                     "description": "Path to the reference genome"
+                },
+                "ctg_name": {
+                    "type": "string",
+                    "description": "Contig name for Clair3 variant calling, e.g. chrX",
+                    "default": "chrX"
+                },
+                "platform": {
+                    "type": "string",
+                    "description": "Platform for Clair3 variant calling. Possible options: ont, hifi, ilmn",
+                    "default": "ont"
+                },
+                "threads": {
+                    "type": "string",
+                    "description": "Number of threads for Clair3 variant calling",
+                    "default": "4"
+                },
+                "model_path": {
+                    "type": "string",
+                    "description": "Model path for Clair3 variant calling. Model name options: r1041_e82_400bps_sup_v500, r1041_e82_400bps_hac_v500, r1041_e82_400bps_sup_v410, r1041_e82_400bps_hac_v410",
+                    "default": "/opt/models/r1041_e82_400bps_sup_v500"
                 }
             },
             "required": [

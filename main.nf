@@ -131,10 +131,10 @@ workflow SKEWX {
         threads:    params.threads,
         model_path: params.model_path
     ])
-    (ch_vcf, ch_clair3_report) = separated_clair3(clair3_args, ch_merged_bam, ch_reference)
+    (ch_vcf, ch_clair3_vcf) = separated_clair3(clair3_args, ch_merged_bam, ch_reference)
         .multiMap{
             vcf: tuple(it[0], it[1], it[2], it[5])
-            dv_report: tuple(it[0], it[7])
+            clair3_report: tuple(it[0], it[7])
         }
 
     // filter variants by PASS
