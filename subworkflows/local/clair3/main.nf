@@ -1,57 +1,35 @@
-#!/usr/bin/env nextflow
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Clair3 subworkflow for variant calling
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Runs Clair3 variant calling on BAM files with specified parameters
-    Coordinates with nextflow.config and main.nf
-----------------------------------------------------------------------------------------
-*/
-
-nextflow.enable.dsl = 2
-
 process CLAIR3_CALL {
     
     tag "${meta.id}"
     container "hkubal/clair3:latest"
     label "process_high"
-    
-    // Resource requirements - defined inline without modules.config
-    cpus   = { check_max( params.threads.toInteger() * task.attempt, 'cpus' ) }
-    memory = { check_max( 32.GB * task.attempt, 'memory' ) }
-    time   = { check_max( 12.h  * task.attempt, 'time'   ) }
-    
-    // Publishing configuration
-    publishDir = [
-        path: { "${params.outdir}/clair3" },
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> filename.equals('versions.yml') ? null : filename }
-    ]
-  
+    publishDir "${params.outdir}", pattern: "*.html", mode: "copy" // only save the report
+    cpus   = "${params.threads ? params.threads : 1}"
+    memory "${params.threads} GB" //actually threads/4 ?
+      
     input:
     each clair3_args
-    tuple val(meta),
-          path(bam),
-          path(bam_bai),
-          path(ref),
-          path(ref_fai)
+    tuple   val(meta), 
+            path(bam), 
+            path(bam_bai), 
+            path(ref), 
+            path(ref_fai)
     
     output:
-    tuple val(meta),
-          path(bam),
-          path(bam_bai),
-          path(ref),
-          path(ref_fai)
-
+    tuple   val(meta), 
+            path(bam), 
+            path(bam_bai), 
+            path(ref), 
+            path(ref_fai),  
+            path("${meta.id}.vcf.gz"), 
+            path("${meta.id}.vcf.gz.tbi")
     
     script:
-    def clair3_opt_ctg_name = clair3_args.ctg_name ? "--ctg_name=${clair3_args.ctg_name}" : ""
+    // declare optional flags if present in clair3_args
+    clair3_opt_ctg_name = clair3_args.ctg_name ? "--ctg_name=${clair3_args.ctg_name}" : ""
     
+    //--output=${OUTPUT_DIR}/skew_test_results not define the output dir & no html_report generated
     """
-    #!/bin/bash
-    set -euo pipefail
-    
     # Run Clair3
     /opt/bin/run_clair3.sh \\
         --bam_fn=${bam} \\
@@ -92,25 +70,35 @@ workflow separated_clair3 {
     
     take:
         clair3_args    // Channel containing Clair3 parameters
-        samples        // Channel containing sample BAMs with metadata
-        reference      // Channel containing reference genome
+        reads        // Channel containing sample BAMs with metadata
+        ref      // Channel containing reference genome
     
     main:
-        // Combine samples with reference and run Clair3
-        samples
-            .combine(reference)
-            .map { meta_bam, ref_tuple ->
-                def (meta, bam, bam_bai) = meta_bam
-                def (ref, ref_fai) = ref_tuple
-                tuple(clair3_args, meta, bam, bam_bai, ref, ref_fai)
-            }
-            | CLAIR3_CALL
-            | set { clair3_results }
-    
+        // Combine channels and feed into Clair3
+        reads
+            .combine(ref.map{tuple(it[1], it[2])})
+            .set {ch_clair3_input}
+
+        results = CLAIR3_CALL(clair3_args, ch_clair3_input)
     emit:
-        clair3_results // Emits tuple(meta, bam, bam_bai, ref, ref_fai, vcf, vcf_idx, report)
+        results
 }
 
+// set params to a falsey default value
+params.model_type = ''
+params.regions = ''
+params.num_shards = ''
+params.make_examples_extra_args = ''
+params.call_variants_extra_args = ''
+params.postprocess_variants_extra_args = ''
+params.bams_dir = ''
+params.ref = ''
+params.ctg_name = ''
+params.platform = ''
+params.threads = ''
+params.model_path = ''
+
+//haven't made a change yet
 def helpMessage() {
     log.info"""
     Wrapper pipeline around Clair3 variant calling.

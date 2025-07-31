@@ -1,1 +1,0 @@
-/opt/bin/run_clair3.sh --bam_fn=/data/Analysis/Lab_HEAL/syf/SkewX2/test_data/mouse_chrX_134107455_136579231.bam --ref_fn=/mnt/Genomics/Lab/HEAL/X_chr/chrX.fa --threads=8 --platform=ont --model_path=/opt/models/r1041_e82_400bps_sup_v500 --output=/data/Analysis/Lab_HEAL/syf/SkewX2/skew_test_results --include_all_ctgs --ctg_name=chrX

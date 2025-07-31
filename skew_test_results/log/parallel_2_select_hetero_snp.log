@@ -1,2 +1,0 @@
-Seq	Host	Starttime	JobRuntime	Send	Receive	Exitval	Signal	Command
-1	:	1753142170.942	     0.315	0	62	0	0	pypy3 /opt/bin/scripts/../clair3.py SelectHetSnp         --vcf_fn /data/Analysis/Lab_HEAL/syf/SkewX2/skew_test_results/pileup.vcf.gz         --split_folder /data/Analysis/Lab_HEAL/syf/SkewX2/skew_test_results/tmp/phase_output/phase_vcf         --ctgName chrX

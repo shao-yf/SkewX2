@@ -1,2 +1,0 @@
-Seq	Host	Starttime	JobRuntime	Send	Receive	Exitval	Signal	Command
-1	:	1753142206.925	     0.318	0	0	0	0	pypy3 /opt/bin/scripts/../clair3.py SelectCandidates     --pileup_vcf_fn /data/Analysis/Lab_HEAL/syf/SkewX2/skew_test_results/pileup.vcf.gz     --split_folder /data/Analysis/Lab_HEAL/syf/SkewX2/skew_test_results/tmp/full_alignment_output/candidate_bed     --ref_fn /mnt/Genomics/Lab/HEAL/X_chr/chrX.fa     --var_pct_full 0.7     --ref_pct_full 0.1     --platform ont     --ctgName chrX
