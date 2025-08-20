@@ -34,9 +34,15 @@ if (params.cgi_bedfile) {
             it -> tuple(id: it.baseName, it)
         }
 } else { exit 1, "CGI Bed file not specified!"}
-if (!(params.platform in ["ont", "hifi", "ilmn"])) {
-    exit 1, "Clair3 platform must be one of ont, hifi, ilmn"
-}
+if (params.SNPcall == "Clair3") {
+        if (!(params.platform in ["ont", "hifi", "ilmn"])) {
+            exit 1, "Clair3 platform must be one of ont, hifi, ilmn"
+        }
+    } else {
+        if (!(params.deepvariant_model in ["WGS", "WES", "PACBIO", "ONT_R104", "HYBRID_PACBIO_ILLUMINA"])) {
+            exit 1, "DeepVariant model must be one of WGS, WES, PACBIO, ONT_R104, or HYBRID_PACBIO_ILLUMINA"
+        }
+    }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     VALIDATE & PRINT PARAMETER SUMMARY
@@ -76,7 +82,8 @@ include {MOSDEPTH as MOSDEPTH_MERGED} from "./modules/local/mosdepth/main.nf"
 include {SAMTOOLS_VIEWHP} from "./modules/local/samtools/view_hp/main.nf"
 include {R_CLUSTERBYMETH} from "./modules/local/R/cluster_by_meth/main.nf"
 include {reporting} from "./subworkflows/reporting.nf"
-include {separated_clair3} from "./subworkflows/local/clair3/main.nf"
+include {separated_clair3} from "./subworkflows/local/SNPcall/main.nf"
+include {separated_deepvariant} from "./subworkflows/local/SNPcall/main.nf"
 
 //
 // WORKFLOW: Run main SkewX analysis pipeline
@@ -120,22 +127,44 @@ workflow SKEWX {
         | mix(ch_single_bams) // add back individuals with single bams
         | set {ch_merged_bam}
 
-    // variant call merged bam with clair3
+    // variant call merged bam with deepvariant/clair3
     // first, duplicate ch_reference for each merged bam
     ch_reference_rep_merged = ch_merged_bam
         .combine(ch_reference.collect())
         .map{meta, merged_bams, merged_bams_idx, meta_ref, ref, ref_idx -> tuple(meta_ref, ref, ref_idx)}
+    
+    if (params.SNPcall == "Clair3") {
     clair3_args = channel.from([
         ctg_name:   params.ctg_name,
         platform:   params.platform,
         threads:    params.threads,
         model_path: params.model_path
     ])
-    (ch_vcf, ch_clair3_vcf) = separated_clair3(clair3_args, ch_merged_bam, ch_reference)
+    (ch_vcf, ch_clair3_report) = separated_clair3(clair3_args, ch_merged_bam, ch_reference)
         .multiMap{
             vcf: tuple(it[0], it[1], it[2], it[5])
             clair3_report: tuple(it[0], it[7])
         }
+    
+    // Set report channel for downstream processes
+    ch_snpcall_report = ch_clair3_report
+    
+    } else {
+    dv_args = channel.from([
+        regions: params.deepvariant_region,
+        model_type: params.deepvariant_model,
+        num_shards: params.deepvariant_num_shards
+    ])
+    
+    (ch_vcf, ch_deepvariant_report) = separated_deepvariant(dv_args, ch_merged_bam, ch_reference)
+        .multiMap{
+            vcf: tuple(it[0], it[1], it[2], it[5])
+            dv_report: tuple(it[0], it[7])
+        }
+    
+    // Set report channel for downstream processes
+    ch_snpcall_report = ch_deepvariant_report
+    }
 
     // filter variants by PASS
     ch_vcf_pass = FILTER_PASS(ch_vcf)
