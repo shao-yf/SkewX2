@@ -47,6 +47,10 @@
                     "type": "string",
                     "description": "Model path for Clair3 variant calling. Model name options: r1041_e82_400bps_sup_v500, r1041_e82_400bps_hac_v500, r1041_e82_400bps_sup_v410, r1041_e82_400bps_hac_v410",
                     "default": "/opt/models/r1041_e82_400bps_sup_v500"
+                },
+                "SNPcall": {
+                    "type": "string",
+                    "description": "Set to 'Clair3' or 'DeepVariant' to select variant caller"
                 }
             },
             "required": [

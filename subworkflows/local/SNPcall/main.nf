@@ -300,7 +300,7 @@ workflow {
             threads: params.threads,
             model_path: params.model_path
         ])
-        separated_clair3(ch_callSNP_args, ch_samples, ch_ref)
+        separated_clair3(ch_clair3_args, ch_samples, ch_ref)
     } else {
         // DeepVariant workflow (default)
         ch_dv_args = channel.from(
@@ -313,6 +313,6 @@ workflow {
                 postprocess_variants_extra_args: params.postprocess_variants_extra_args
             ]
         )
-        separated_deepvariant(ch_callSNP_args, ch_samples, ch_ref)
+        separated_deepvariant(ch_dv_args, ch_samples, ch_ref)
     }
 }
